@@ -8,7 +8,7 @@ import routes from './routes';
 dotenv.config();
 const app = express();
 
-app.set('port', process.env.PORT || 7000);
+app.set('port', process.env.PORT || 5000);
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -17,8 +17,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use('/', routes);
-app.use((err, req, res) => {
-  res.status(500).json({ failure: err });
-});
+// app.use((err, req, res) => {
+//   console.log(err);
+// });
 
 app.listen(app.get('port'), () => console.log('the server is ruunning on ', app.get('port')));
