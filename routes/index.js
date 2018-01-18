@@ -2,6 +2,7 @@ import express from 'express';
 
 import test from './test';
 import keyboard from './keyboard';
+import message from './message';
 
 import checkUserKey from '../helper/checkUserkey';
 
@@ -9,6 +10,7 @@ const router = express.Router();
 
 router.use('/test', test);
 router.use('/keyboard', keyboard);
+router.use('/message', message);
 
 router.post('/friend', checkUserKey, (req, res) => {
   const { user_key } = req.body;
