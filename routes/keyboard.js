@@ -1,11 +1,11 @@
 import express from 'express';
 
-import message from '../service/messages';
+import messages from '../service/messages';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  res.json(message.buttonType());
+  res.json(messages.buttonType());
 });
 
 export default router;

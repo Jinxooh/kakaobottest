@@ -2,7 +2,7 @@ import buttonTypes from './buttonTypes';
 
 const buttonType = () => ({
   type: 'buttons',
-  buttons: buttonTypes.initButtons,
+  buttons: buttonTypes.init,
 });
 
 const textMessage = (text, buttons = false) => ({
