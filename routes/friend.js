@@ -1,7 +1,7 @@
 import express from 'express';
 
 import checkUserKey from '../helper/checkUserkey';
-import messages from '../service/messages';
+import messageTypes from '../service/messageTypes';
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.post('/', checkUserKey, (req, res) => {
   console.log(`${user_key} is joined chatting room.`);
 
   // res.json({ success: true });
-  res.json(messages.buttonType());
+  res.json(messageTypes.initButtonType());
 });
 
 router.delete('/:user_key', checkUserKey, (req, res) => {

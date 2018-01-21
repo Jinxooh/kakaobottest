@@ -1,9 +1,9 @@
 const init = ['시작'];
-const step1 = ['1-1', '1-2'];
-const step2 = ['2-1', '2-2'];
+const steps = [
+  ['끝~'], // 15
+];
 
 export default {
   init,
-  step1,
-  step2,
+  steps,
 };
