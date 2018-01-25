@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -r dotenv/config ./node_modules/babel-cli/bin/babel-node.js index.js"
+    "dev": "NODE_PATH=src NODE_ENV=development nodemon -r dotenv/config ./node_modules/babel-cli/bin/babel-node.js index.js"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -12,12 +12,13 @@
     "express": "^4.16.2",
     "lodash": "^4.17.4",
     "morgan": "^1.9.0",
-    "nodemon": "^1.14.11"
+    "nodemon": "^1.14.11",
+    "oracledb": "^2.0.15"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "eslint": "^4.15.0",
     "babel-preset-node6": "^11.0.0",
+    "eslint": "^4.15.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
