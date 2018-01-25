@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_PATH=src NODE_ENV=development nodemon -r dotenv/config ./node_modules/babel-cli/bin/babel-node.js index.js"
+    "dev": "NODE_PATH=src NODE_ENV=development nodemon -r dotenv/config ./node_modules/babel-cli/bin/babel-node.js src/index"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
