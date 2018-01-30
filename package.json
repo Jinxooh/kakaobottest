@@ -8,9 +8,12 @@
   },
   "dependencies": {
     "body-parser": "^1.18.2",
+    "chalk": "^2.3.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "lodash": "^4.17.4",
+    "moment": "^2.20.1",
+    "mongoose": "^5.0.2",
     "morgan": "^1.9.0",
     "nodemon": "^1.14.11",
     "oracledb": "^2.0.15"
