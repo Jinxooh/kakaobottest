@@ -4,7 +4,9 @@ const { Schema } = mongoose;
 
 const User = new Schema({
   userKey: String,
-  status: String,
+  stateName: String,
+  mode: String,
+  step: Number,
 });
 
 User.statics.findUserKey = function (userKey) {
@@ -14,10 +16,20 @@ User.statics.findUserKey = function (userKey) {
 User.statics.registerUserKey = function (userKey) {
   const user = new this({
     userKey,
-    status: 'INIT',
+    stateName: 'INIT',
+    mode: 'MODE_NORMAL',
+    step: 0,
   });
 
   return user.save();
+};
+
+User.methods.updateState = function (stateName) {
+  this.update({
+    $set: {
+      stateName,
+    },
+  }).exec();
 };
 
 
