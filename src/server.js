@@ -6,6 +6,7 @@ import path from 'path';
 
 import http from 'http';
 import https from 'https';
+import lex from 'lib/greenlock';
 
 import routes from './routes';
 
@@ -33,7 +34,7 @@ export default class Server {
   listen(port) {
     const { app } = this;
     app.listen(port);
-    const file = fs.readFileSync(path.join('/Users/hwangjinsoo-pc/Documents/MyWorks/yarn.lock'));
+    const file = fs.readFileSync('/Users/hwangjinsoo-pc/Documents/MyWorks/yarn.lock');
     console.log(file);
     console.log('The server is running on port ', port);
   }
@@ -45,6 +46,10 @@ export default class Server {
 
   httpsListen(port) {
     const { app } = this;
-    https.createServer(app).listen(port, () => console.log('The HTTP server is running on port ', port));
+    // const option = {
+    //   key: fs.readFileSync('/etc/letsencrypt/live/jadoochat.standard.kr/privkey.pem'),
+    //   cert: fs.readFileSync('/etc/letsencrypt/live/jadoochat.standard.kr/cert.pem'),
+    // }
+    https.createServer(lex.httpsOptions, lex.middleware(app)).listen(port, () => console.log('The HTTP server is running on port ', port));
   }
 }

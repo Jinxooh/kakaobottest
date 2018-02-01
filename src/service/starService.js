@@ -37,6 +37,7 @@ const star = (() => {
   return {
     service: async (user, content, callback) => {
       const { step, mode } = user;
+      await user.updateMode(MODE_NORMAL);
       if (mode === MODE_DATE) {
         const date = moment(content, 'YYYY/MM/DD').isValid();
         console.log(date);
@@ -53,8 +54,14 @@ const star = (() => {
         callback(messageTypes.textMessage('날짜 제대로 입력'));
         return;
       }
-      await user.updateMode(MODE_DATE);
-      callback(messageTypes.textMessage('날짜 입력'));
+
+      if (mode === MODE_NORMAL) {
+        if (content === buttonTypes.selectTest[0]) {
+          callback(messageTypes.textMessage('날짜 입력'));
+          return;
+        }
+        callback(messageTypes.textMessage('시작해 볼까요오옷?', buttonTypes.selectTest));
+      }
       return;
 
       console.log('content, ', content);
