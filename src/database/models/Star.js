@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const Star = new Schema({
-  starId: String,
+  starId: Number,
   question: {
     type: String,
     default: null,
@@ -12,6 +12,7 @@ const Star = new Schema({
     type: [String],
     default: [],
   },
+  nextStep: [Number],
   msgType: String,
 });
 

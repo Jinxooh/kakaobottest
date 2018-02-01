@@ -1,12 +1,15 @@
 import messageTypes from 'service/messageTypes';
-import buttonTypes from 'service/buttonTypes';
+import buttonTypes, {
+  STAR_SELECT,
+  INIT,
+  STAR,
+  TAROT,
+} from 'service/buttonTypes';
 import User from 'database/models/User';
 import log from 'lib/log';
 import star from 'service/starService';
 
-const INIT = 'INIT';
-const STAR = 'STAR';
-const TAROT = 'TAROT';
+
 
 const service = async (obj, callback) => {
   const {
@@ -26,13 +29,13 @@ const service = async (obj, callback) => {
   }
   // check user key
  
-  // user.updateState(STAR);
+  user.updateState(STAR);
   console.log(userState);
   if (userState === INIT) {
     switch (content) {
       case buttonTypes.selectTest[0]:
         user.updateState(STAR);
-        callback(messageTypes.textMessage('별자리 선택', buttonTypes.init));
+        callback(messageTypes.textMessage(STAR_SELECT, buttonTypes.init));
         break;
       case buttonTypes.selectTest[1]:
         user.updateState(TAROT);
@@ -51,7 +54,7 @@ const service = async (obj, callback) => {
     }
 
     if (userState === TAROT) {
-      log.info('user selected Star test');
+      log.info('user selected TAROT test');
       callback(messageTypes.textMessage('Default', buttonTypes.init));
     }
 

@@ -4,9 +4,9 @@ export const join = async (req, res) => {
   const { user_key } = req.body;
   console.log(`${user_key}님이 쳇팅방에 참가했습니다.`);
   const user = await User.findUserKey(user_key);
-  if (!user) {
-    User.registerUserKey(user_key);
-  }
+  if (!user) User.registerUserKey(user_key);
+  // const user = dataHelper.getUser(user_key);
+  // console.log(user);
 
   res.json({ success: true });
 };

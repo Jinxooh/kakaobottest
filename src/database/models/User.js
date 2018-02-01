@@ -1,4 +1,8 @@
 import mongoose from 'mongoose';
+import {
+  INIT,
+  MODE_NORMAL,
+} from 'service/buttonTypes';
 
 const { Schema } = mongoose;
 
@@ -16,8 +20,8 @@ User.statics.findUserKey = function (userKey) {
 User.statics.registerUserKey = function (userKey) {
   const user = new this({
     userKey,
-    stateName: 'INIT',
-    mode: 'MODE_NORMAL',
+    stateName: INIT,
+    mode: MODE_NORMAL,
     step: 0,
   });
 
@@ -30,6 +34,22 @@ User.methods.updateState = function (stateName) {
       stateName,
     },
   }).exec();
+};
+
+User.methods.updateStep = function (step) {
+  this.update({
+    $set: {
+      step,
+    },
+  }).exec();
+};
+
+User.methods.updateMode = function (mode) {
+  return this.update({
+    $set: {
+      mode,
+    },
+  });
 };
 
 

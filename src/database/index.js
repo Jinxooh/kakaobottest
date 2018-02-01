@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import log from 'lib/log';
 
 const {
-  MONGO_URI: mongoURI,
+  TEST_MONGO_URI: mongoURI,
 } = process.env;
 
 export default (() => {
