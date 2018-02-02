@@ -22,7 +22,6 @@ User.statics.registerUserKey = function (userKey) {
     userKey,
     stateName: INIT,
     mode: MODE_NORMAL,
-    step: 0,
   });
 
   return user.save();
@@ -36,14 +35,6 @@ User.methods.updateState = function (stateName) {
   }).exec();
 };
 
-User.methods.updateStep = function (step) {
-  this.update({
-    $set: {
-      step,
-    },
-  }).exec();
-};
-
 User.methods.updateMode = function (mode) {
   return this.update({
     $set: {
@@ -52,5 +43,13 @@ User.methods.updateMode = function (mode) {
   });
 };
 
+User.methods.updateStatus = function ({ mode, stateName }) {
+  return this.update({
+    $set: {
+      mode,
+      stateName,
+    },
+  });
+};
 
 export default mongoose.model('User', User);

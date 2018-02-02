@@ -23,23 +23,24 @@ const service = async (obj, callback) => {
 
   // select init or call init
   if (content === buttonTypes.init[0] || content === 'a' || content === '시작') {
+    await user.updateState(INIT);
     await user.updateMode(MODE_NORMAL);
-    await user.updateStep(0);
     callback(messageTypes.textMessage(buttonTypes.init[0], buttonTypes.selectTest));
     return;
   }
   // check user key
- 
-  user.updateState(STAR);
-  console.log(userState);
+
+  // await user.updateState(STAR);
   if (userState === INIT) {
+    console.log('content', content);
     switch (content) {
       case buttonTypes.selectTest[0]:
-        user.updateState(STAR);
-        callback(messageTypes.textMessage(STAR_SELECT, buttonTypes.init));
+        await user.updateState(STAR);
+        // callback(messageTypes.textMessage(STAR_SELECT, buttonTypes.init));
+        star.service(user, content, callback);
         break;
       case buttonTypes.selectTest[1]:
-        user.updateState(TAROT);
+        await user.updateState(TAROT);
         callback(messageTypes.textMessage('타로 선택', buttonTypes.init));
         break;
       default:

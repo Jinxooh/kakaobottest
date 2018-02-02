@@ -11,6 +11,6 @@ if (process.env.APP_ENV === 'local') {
 }
 if (process.env.APP_ENV === 'server') {
   // server.httpListen(process.env.PORT_80 || 5001);
-  server.httpsListen(process.env.SSL_PORT || 443);
+  server.httpsListen(process.env.SSL_PORT || 8443);
 }
 
