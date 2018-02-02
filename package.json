@@ -13,12 +13,15 @@
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "greenlock-express": "^2.0.12",
+    "le-challenge-fs": "^2.0.8",
+    "letsencrypt-express": "^2.0.6",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "mongoose": "^5.0.2",
     "morgan": "^1.9.0",
     "nodemon": "^1.14.11",
-    "oracledb": "^2.0.15"
+    "oracledb": "^2.0.15",
+    "redirect-https": "^1.1.4"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

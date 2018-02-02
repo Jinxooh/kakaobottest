@@ -1,12 +1,14 @@
 import Star from 'database/models/Star';
 import log from 'lib/log';
 import moment from 'moment';
+import isEmpty from 'lodash/isEmpty';
 
 import messageTypes from 'service/messageTypes';
 import buttonTypes, {
   STAR_SELECT,
   MODE_DATE,
   MODE_NORMAL,
+  MODE_INPUT,
 } from 'service/buttonTypes';
 
 const MESSAGE = 'onlyMessage';
@@ -37,18 +39,37 @@ const star = (() => {
   return {
     service: async (user, content, callback) => {
       const { step, mode } = user;
-      await user.updateMode(MODE_NORMAL);
-      if (mode === MODE_DATE) {
+      const currentStar = await Star.findStarId(step);
+      if (!currentStar) {
+        log.info('currentStar is null ', currentStar);
+        user.updateStep(0);
+        callback(messageTypes.textMessage('처음으로 돌아간다아아앗', buttonTypes.selectTest));
+        return;
+      }
+      // console.log(currentStar);
+      const { startId, question, answer, msgType, urlPhoto, urlButton, prevAnswer } = currentStar;
+      console.log('answer, ', answer);
+      console.log('prevAnswer, ', prevAnswer);
+      console.log('question, ', question);
+      console.log('msgType, ', msgType);
+      const convertedQuestion = question.replace(/\\n/g, '\n');
+      log.info('step : ' + step);
+      // await user.updateStep(0);
+      // await user.updateMode(MODE_NORMAL);
+      if (mode === MODE_INPUT) {
         const date = moment(content, 'YYYY/MM/DD').isValid();
         console.log(date);
         if (date) {
           const updatedUser = await user.updateMode(MODE_NORMAL);
           if (updatedUser.ok) {
             console.log('okok');
+            await user.updateStep(step + 1);
+            callback(messageTypes.textMessage(`${convertedQuestion} : ${content}`, answer));
           } else {
             console.log('failure');
+            await user.updateStep(0);
+            callback(messageTypes.textMessage(`문제 발생했어요! 다시 시작해주세요`, buttonTypes.selectTest));
           }
-          callback(messageTypes.textMessage(`날짜 : ${content}`, buttonTypes.selectTest));
           return;
         }
         callback(messageTypes.textMessage('날짜 제대로 입력'));
@@ -56,42 +77,40 @@ const star = (() => {
       }
 
       if (mode === MODE_NORMAL) {
-        if (content === buttonTypes.selectTest[0]) {
-          callback(messageTypes.textMessage('날짜 입력'));
+        await user.updateStep(step + 1);
+        if (content === STAR_SELECT) {
+          callback(messageTypes.textMessage(convertedQuestion, answer));
           return;
         }
-        callback(messageTypes.textMessage('시작해 볼까요오옷?', buttonTypes.selectTest));
-      }
-      return;
 
-      console.log('content, ', content);
-      console.log(user);
-      const currentStar = await Star.findStarId(step);
-      if (!currentStar) {
-        log.info('currentStar is null ', currentStar);
-        user.updateStep(0);
-        callback(messageTypes.textMessage(buttonTypes.init[0], buttonTypes.selectTest));
-        return;
-      }
+        if (isEmpty(answer)) {
+          if (content === prevAnswer[1]) {
+            await user.updateStep(0);
+            await user.updateMode(MODE_NORMAL);
+            callback(messageTypes.textMessage('부정누름1', buttonTypes.selectTest));
+            return;
+          }
+          await user.updateMode(MODE_INPUT);
+          callback(messageTypes.textMessage(convertedQuestion));
+          return;
+        }
 
-      if (content === STAR_SELECT) {
-        user.updateStep(step + 1);
-        callback(messageType(currentStar));
-      } else {
-        const prevStar = await Star.findStarId(step - 1);
-        const { answer: prevAnswer } = prevStar;
-        if (content === prevAnswer[0]) {
-          user.updateStep(step + 1);
-          callback(messageType(currentStar));
-          return;
+        if (isEmpty(prevAnswer)) {
+          callback(messageTypes.textMessage(convertedQuestion, answer));
+        } else {
+          if (content === prevAnswer[0]) {
+            callback(messageTypes.textMessage(convertedQuestion, answer));
+            return;
+          }
+          if (content === prevAnswer[1]) {
+            await user.updateStep(0);
+            await user.updateMode(MODE_NORMAL);
+            callback(messageTypes.textMessage('부정누름2', buttonTypes.selectTest));
+            return;
+          }
         }
-        if (content === prevAnswer[1]) {
-          user.updateStep(0);
-          callback(messageTypes.textMessage(buttonTypes.init[0], buttonTypes.selectTest));
-          return;
-        }
-        user.updateStep(0);
-        callback(messageTypes.textMessage(buttonTypes.init[0], buttonTypes.selectTest));
+        await user.updateStep(0);
+        callback(messageTypes.textMessage('아무것도 아닌것', buttonTypes.selectTest));
       }
     },
   };

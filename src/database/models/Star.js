@@ -10,9 +10,12 @@ const Star = new Schema({
   },
   answer: {
     type: [String],
-    default: [],
+    default: null,
   },
-  nextStep: [Number],
+  prevAnswer: {
+    type: [String],
+    default: null,
+  },
   msgType: String,
 });
 

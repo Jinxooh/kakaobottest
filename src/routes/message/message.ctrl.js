@@ -4,12 +4,11 @@ import buttonTypes, {
   INIT,
   STAR,
   TAROT,
+  MODE_NORMAL,
 } from 'service/buttonTypes';
 import User from 'database/models/User';
 import log from 'lib/log';
 import star from 'service/starService';
-
-
 
 const service = async (obj, callback) => {
   const {
@@ -23,7 +22,9 @@ const service = async (obj, callback) => {
   const { stateName: userState } = user;
 
   // select init or call init
-  if (content === buttonTypes.init[0]) {
+  if (content === buttonTypes.init[0] || content === 'a' || content === '시작') {
+    await user.updateMode(MODE_NORMAL);
+    await user.updateStep(0);
     callback(messageTypes.textMessage(buttonTypes.init[0], buttonTypes.selectTest));
     return;
   }
@@ -50,15 +51,16 @@ const service = async (obj, callback) => {
     if (userState === STAR) {
       log.info('user selected Star test');
       star.service(user, content, callback);
+      return;
       // callback(messageTypes.textMessage('Default', buttonTypes.init));
     }
 
     if (userState === TAROT) {
       log.info('user selected TAROT test');
       callback(messageTypes.textMessage('Default', buttonTypes.init));
+      return;
     }
-
-    console.log('user select something else', userState);
+    log.info('user select something else', userState);
   }
 };
 
@@ -70,7 +72,7 @@ export const getMessage = (req, res) => {
   };
 
   service(obj, (result) => {
-    console.log(result);
+    // console.log(result);
     res.json(result);
   });
 };

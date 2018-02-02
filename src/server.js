@@ -1,17 +1,13 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import fs from 'fs';
-import path from 'path';
 
 import http from 'http';
 import https from 'https';
-import lex from 'lib/greenlock';
 
+import fs from 'fs';
+// import lex from 'lib/lex';
 import routes from './routes';
-
-const httpPort = 80;
-const httpsPort = 443;
 
 export default class Server {
   constructor() {
@@ -21,7 +17,6 @@ export default class Server {
 
   middleware() {
     const { app } = this;
-    // app.use(express.static('public'));
     app.use(morgan('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
@@ -39,21 +34,30 @@ export default class Server {
 
   httpListen(port) {
     const { app } = this;
-    http.createServer(app).listen(port, () => console.log('The HTTP server is running on port ', port));
+    http.createServer(
+      app,
+      // lex.middleware(require('redirect-https')(app)),
+    ).listen(
+      port,
+      () => console.log('The HTTP server is running on port ', port)
+    );
   }
 
   httpsListen(port) {
     const { app } = this;
-    // const option = {
-    //   key: fs.readFileSync('/etc/letsencrypt/live/jadoochat.standard.kr/privkey.pem'),
-    //   cert: fs.readFileSync('/etc/letsencrypt/live/jadoochat.standard.kr/cert.pem'),
-    // }
-    https.createServer(
-      lex.httpsOptions,
-      lex.middleware(app),
-    ).listen(
-      port,
-      () => console.log('The HTTPS server is running on port ', port),
-    );
+    // https.createServer(
+    //   lex.httpsOptions,
+    //   lex.middleware(app),
+    // ).listen(
+    //   port,
+    //   () => console.log('The HTTPS server is running on port ', port),
+    // );
+    const rootDir = '/etc/letsencrypt/live/jadoochat.standard.kr';
+    const options = {
+      key: fs.readFileSync(`${rootDir}/privkey.pem`),
+      cert: fs.readFileSync(`${rootDir}/cert.pem`),
+    };
+
+    https.createServer(options, app).listen(port, () => console.log('Https server listening on port ', port));
   }
 }

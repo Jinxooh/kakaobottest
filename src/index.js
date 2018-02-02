@@ -10,6 +10,7 @@ if (process.env.APP_ENV === 'local') {
   server.listen(process.env.PORT || 5000);
 }
 if (process.env.APP_ENV === 'server') {
+  // server.httpListen(process.env.PORT_80 || 5001);
   server.httpsListen(process.env.SSL_PORT || 443);
 }
 

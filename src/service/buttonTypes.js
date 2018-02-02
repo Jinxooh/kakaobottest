@@ -4,6 +4,7 @@ export const STAR = 'STAR';
 export const TAROT = 'TAROT';
 export const MODE_NORMAL = 'MODE_NORMAL';
 export const MODE_DATE = 'MODE_DATE';
+export const MODE_INPUT = 'MODE_INPUT';
 
 const init = ['자두야 놀자!'];
 const selectTest = [STAR_SELECT, '타로'];
